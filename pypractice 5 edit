@@ -1,0 +1,52 @@
+import random
+import time
+
+purse = 100000
+bitcoin = 45000
+tickrate = random.randint(5,6)
+rate_of_change_options = [348, -8411, 3940, 34, 664, 1035, 3033, 9999, 13985, 139, -400, -1048, -10, 930, 331, -39, -1, 3940, 5891, -40000, 32901, 988, 948, 2931, 45, -38918, 10, 394, -399, -48, -45, -3910, 4000, -19933, -33930, 9310, 3619, 5913, 7588, 9401, 6631, -10000, 4901, 8888, 12000, -3003, 9834, 3013, 1000, 1233, 773, 919]
+BITCOIN_PORTFOLIO = 0
+transaction_fee = bitcoin / 50
+turns = 0
+
+print("welcome to crypto simulator, reach $1m to win, type y to buy, n to refuse and s to sell. updates every ~5.5 seconds")
+print("Y = BUY | S = SELL | N = PASS | B = BULK BUY (3)")
+while True:
+    # Check if the purse value reaches 1 million
+    if purse >= 1000000:
+        print("Congratulations, you're a millionaire! Turns to reach millionaire:", turns,)
+        break  # Exit the loop and end the program
+    
+    if purse <= -100000:
+        print("You're in debt and the creditors end you")
+        break
+        
+    time.sleep(tickrate)
+    RateofChange = random.choice(rate_of_change_options)
+    bitcoin += RateofChange
+    print("CURRENT BTC VALUE:", bitcoin, "CURRENT PURSE VALUE:", purse, "AMOUNT OF BITCOINS", BITCOIN_PORTFOLIO)
+    buy = input("Buy BTC? y/n/s/b")
+    if buy != "y" and buy != "n" and buy != "s" and buy != "b":
+        print("invalid argument")
+    elif buy == "y":
+        print("You have bought 1 BTC for $", bitcoin, "!")
+        purse -= (bitcoin + transaction_fee)
+        BITCOIN_PORTFOLIO += 1
+        turns += 1
+    elif buy == "s":
+        if BITCOIN_PORTFOLIO == 0:
+            print("you have no bitcoins")
+        else:
+            print("You sell all bitcoins!")
+            purse += (BITCOIN_PORTFOLIO * bitcoin)
+            BITCOIN_PORTFOLIO -= BITCOIN_PORTFOLIO
+            turns += 1
+    elif buy == "b":
+        print("You have bought bitcoin in a bulk (3x)")
+        purse -= ((bitcoin * 3) + transaction_fee)
+        BITCOIN_PORTFOLIO += 3
+        turns += 1
+    else:
+        print("waiting for the dip...")
+        turns += 1
+    
